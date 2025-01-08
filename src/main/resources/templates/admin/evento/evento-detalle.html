@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detalle del Evento</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary-color: #1a1a1a;
+        --secondary-color: #b69f58;
+        --accent-color: #e5e5e5;
+        --text-color: #d1d1d1;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-[var(--primary-color)] text-[var(--text-color)] flex flex-col min-h-screen"
+  >
+    <!-- NAV -->
+    <nav
+      class="bg-[var(--primary-color)] text-[var(--secondary-color)] shadow-md"
+    >
+      <div
+        class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center"
+      >
+        <a
+          href="/admin/menu"
+          class="text-xl font-semibold tracking-wide hover:text-[var(--accent-color)] transition"
+        >
+          Gestión de Eventos - Administración
+        </a>
+
+        <div class="hidden md:flex space-x-6">
+          <a
+            th:href="@{/admin/usuarios}"
+            class="hover:text-[var(--accent-color)] transition"
+          >
+            Usuarios
+          </a>
+          <a
+            th:href="@{/admin/eventos}"
+            class="hover:text-[var(--accent-color)] transition"
+          >
+            Eventos
+          </a>
+          <a
+            th:href="@{/admin/perfiles}"
+            class="hover:text-[var(--accent-color)] transition"
+          >
+            Perfiles
+          </a>
+          <a
+            th:href="@{/admin/tipos}"
+            class="hover:text-[var(--accent-color)] transition"
+          >
+            Tipos de Evento
+          </a>
+        </div>
+
+        <div class="flex items-center space-x-3">
+          <span class="text-sm">
+            Bienvenido,
+            <span th:text="${#authentication.name.toUpperCase()}"></span>
+          </span>
+          <span class="text-[var(--secondary-color)]">|</span>
+          <a
+            th:href="@{/logout}"
+            class="bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] text-[var(--accent-color)] hover:text-[var(--secondary-color)] font-semibold py-1 px-3 rounded text-sm transition duration-300 shadow"
+          >
+            Cerrar Sesión
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- MAIN -->
+    <main class="flex-grow container mx-auto p-4 mt-4">
+      <div
+        class="max-w-full bg-[var(--accent-color)] text-[var(--primary-color)] shadow-lg rounded-lg p-6"
+      >
+        <h1 class="text-2xl font-bold text-center mb-6">Detalle del Evento</h1>
+    
+        <!-- Container -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <!-- Info evento -->
+          <div class="sm:col-span-2">
+            <ul class="space-y-4">
+              <li><strong>ID:</strong> <span th:text="${evento.idEvento}"></span></li>
+              <li><strong>Nombre:</strong> <span th:text="${evento.nombre}"></span></li>
+              <li><strong>Descripción:</strong> <span th:text="${evento.descripcion}"></span></li>
+              <li><strong>Aforo Máximo:</strong> <span th:text="${evento.aforoMaximo}"></span></li>
+              <li><strong>Mínimo de Asistencia:</strong> <span th:text="${evento.minimoAsistencia}"></span></li>
+              <li><strong>Fecha de Inicio:</strong> <span th:text="${#dates.format(evento.fechaInicio, 'dd/MM/yyyy')}"></span></li>
+              <li><strong>Estado:</strong> <span th:text="${evento.estado}"></span></li>
+              <li><strong>Precio:</strong> <span th:text="${evento.precio} + ' €'"></span></li>
+              <li><strong>Dirección:</strong> <span th:text="${evento.direccion}"></span></li>
+              <li><strong>Destacado:</strong> <span th:text="${evento.destacado == 'S' ? 'Sí' : 'No'}"></span></li>
+              <li><strong>Tipo de Evento:</strong> <span th:text="${evento.tipo.nombre}"></span></li>
+            </ul>
+          </div>
+    
+          <!-- Imagen -->
+          <div class="flex justify-center items-center">
+            <img
+              src="https://via.placeholder.com/300"
+              alt="Imagen del Evento"
+              class="rounded-lg shadow-md"
+            />
+          </div>
+        </div>
+    
+        <div class="flex justify-center mt-6">
+          <a
+            th:href="@{/admin/eventos}"
+            class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg text-sm font-semibold shadow transition duration-300"
+          >
+            Volver a la Lista de Eventos
+          </a>
+        </div>
+      </div>
+    </main>
+    
+    <!-- FOOTER -->
+    <footer class="bg-[var(--primary-color)] text-[var(--text-color)] py-6">
+      <div class="max-w-7xl mx-auto text-center">
+        <p class="text-sm tracking-wide">Gestión de Eventos. Diego-Maker.</p>
+        <div class="flex justify-center items-center mt-4">
+          <a
+            href="https://github.com/diegoarnanz-maker"
+            target="_blank"
+            class="text-[var(--text-color)] hover:text-[var(--secondary-color)] transition duration-300 mx-3"
+          >
+            <i class="fab fa-github text-2xl"></i>
+          </a>
+          <a
+            href="https://diegoarnanz-maker-portfolio.netlify.app/"
+            target="_blank"
+            class="text-[var(--text-color)] hover:text-[var(--secondary-color)] transition duration-300 mx-3"
+          >
+            <i class="fas fa-briefcase text-2xl"></i>
+          </a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

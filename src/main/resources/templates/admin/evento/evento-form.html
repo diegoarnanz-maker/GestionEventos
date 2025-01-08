@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formulario de Evento</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary-color: #1a1a1a;
+        --secondary-color: #b69f58;
+        --accent-color: #e5e5e5;
+        --text-color: #d1d1d1;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-[var(--primary-color)] text-[var(--text-color)] flex flex-col min-h-screen"
+  >
+    <!-- NAV -->
+    <nav
+      class="bg-[var(--primary-color)] text-[var(--secondary-color)] shadow-md"
+    >
+      <div
+        class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center"
+      >
+        <a
+          href="/admin/menu"
+          class="text-xl font-semibold tracking-wide hover:text-[var(--accent-color)] transition"
+        >
+          Gestión de Eventos - Administración
+        </a>
+        <div class="flex items-center space-x-3">
+          <span class="text-sm"
+            >Bienvenido,
+            <span th:text="${#authentication.name.toUpperCase()}"></span
+          ></span>
+          <span class="text-[var(--secondary-color)]">|</span>
+          <a
+            th:href="@{/logout}"
+            class="bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] text-[var(--accent-color)] hover:text-[var(--secondary-color)] font-semibold py-1 px-3 rounded text-sm transition duration-300 shadow"
+            >Cerrar Sesión</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <!-- MAIN -->
+    <main class="flex-grow container mx-auto p-4 mt-4">
+      <div class="max-w-4xl mx-auto bg-[var(--accent-color)] text-[var(--primary-color)] shadow-lg rounded-lg p-6">
+        <h1 class="text-xl font-bold text-center mb-4">Formulario de Evento</h1>
+
+        <form th:action="@{/admin/eventos}" method="post" id="eventoForm" th:object="${evento}">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <!-- Se prodia ocultar -->
+            <div th:if="${evento.idEvento != null}">
+              <label for="idEvento" class="block text-sm font-medium">ID</label>
+              <input
+                type="text"
+                id="idEvento"
+                name="idEvento"
+                class="mt-1 block w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm bg-gray-100 cursor-not-allowed focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm"
+                th:value="${evento.idEvento}"
+                readonly
+              />
+            </div>
+            
+            <div>
+              <label for="nombre" class="block text-sm font-medium">Nombre</label>
+              <input
+                type="text"
+                id="nombre"
+                th:field="*{nombre}"
+                class="mt-1 block w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm"
+                placeholder="Introduce el nombre del evento"
+                required
+              />
+              <p th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" class="text-red-600 text-sm"></p>
+            </div>
+            
+            <div>
+              <label for="tipo" class="block text-sm font-medium">Tipo</label>
+              <select
+                id="tipo"
+                name="tipoId"
+                class="mt-1 block w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm"
+                required
+              >
+                <option value="" disabled selected>Selecciona un tipo</option>
+                <option
+                  th:each="tipo : ${tipos}"
+                  th:value="${tipo.idTipo}"
+                  th:text="${tipo.nombre}"
+                  th:selected="${evento.tipo?.idTipo == tipo.idTipo}"
+                ></option>
+              </select>
+              <p th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}" class="text-red-600 text-sm"></p>
+            </div>
+            
+
+            <div>
+              <label for="aforoMaximo" class="block text-sm font-medium">Aforo Máximo</label>
+              <input
+                type="number"
+                id="aforoMaximo"
+                name="aforoMaximo"
+                class="mt-1 block w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm"
+                th:value="${evento.aforoMaximo}"
+                placeholder="Introduce el aforo máximo"
+                required
+              />
+            </div>
+
+            <div>
+              <label for="minimoAsistencia" class="block text-sm font-medium">Mínimo de Asistencia</label>
+              <input
+                type="number"
+                id="minimoAsistencia"
+                name="minimoAsistencia"
+                class="mt-1 block w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm"
+                th:value="${evento.minimoAsistencia}"
+                placeholder="Introduce el mínimo de asistencia"
+                required
+              />
+            </div>
+            
+            <div>
+              <label for="fechaInicio" class="block text-sm font-medium">Fecha de Inicio</label>
+              <input
+                type="date"
+                id="fechaInicio"
+                name="fechaInicio"
+                class="mt-1 block w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm"
+                th:value="${#dates.format(evento.fechaInicio, 'yyyy-MM-dd')}"
+                required
+              />
+            </div>
+
+            <div>
+              <label for="duracion" class="block text-sm font-medium">Duración (horas)</label>
+              <input
+                type="number"
+                id="duracion"
+                name="duracion"
+                class="mt-1 block w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm"
+                th:value="${evento.duracion}"
+                placeholder="Duración del evento"
+                required
+              />
+            </div>
+
+            <div>
+              <label for="precio" class="block text-sm font-medium">Precio (€)</label>
+              <input
+                type="number"
+                step="0.01"
+                id="precio"
+                name="precio"
+                class="mt-1 block w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm"
+                th:value="${evento.precio}"
+                placeholder="Precio del evento"
+                required
+              />
+            </div>
+
+            <div class="md:col-span-2">
+              <label for="direccion" class="block text-sm font-medium">Dirección</label>
+              <input
+                type="text"
+                id="direccion"
+                name="direccion"
+                class="mt-1 block w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm"
+                th:value="${evento.direccion}"
+                placeholder="Introduce la dirección"
+                required
+              />
+            </div>
+
+            <div class="md:col-span-2">
+              <label for="descripcion" class="block text-sm font-medium">Descripción</label>
+              <textarea
+                id="descripcion"
+                name="descripcion"
+                class="mt-1 block w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm h-[100px] resize-none"
+                placeholder="Describe el evento"
+                th:text="${evento.descripcion}"
+                required
+              ></textarea>
+            </div>
+          </div>
+          
+          <!-- Botones de acción -->
+          <div class="flex flex-wrap justify-end gap-3 mt-6">
+            <button
+              type="submit"
+              class="px-6 py-2 bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] text-[var(--accent-color)] hover:text-[var(--secondary-color)] rounded-lg shadow-md font-semibold text-sm transition duration-300"
+            >
+              Guardar
+            </button>
+            <button
+              type="reset"
+              class="px-6 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md shadow-md font-semibold text-sm transition duration-300"
+            >
+              Borrar
+            </button>
+            <a
+              th:href="@{/admin/eventos}"
+              class="px-6 py-2 text-center bg-red-500 hover:bg-red-600 text-white rounded-md shadow-md font-semibold text-sm transition duration-300"
+            >
+              Cancelar
+            </a>
+          </div>
+        </form>
+      </div>
+    </main>
+    
+
+    <!-- FOOTER -->
+    <footer class="bg-[var(--primary-color)] text-[var(--text-color)] py-6">
+      <div class="max-w-7xl mx-auto text-center">
+        <p class="text-sm tracking-wide">Gestión de Eventos. Diego-Maker.</p>
+        <div class="flex justify-center items-center mt-4">
+          <a
+            href="https://github.com/diegoarnanz-maker"
+            target="_blank"
+            class="text-[var(--text-color)] hover:text-[var(--secondary-color)] transition duration-300 mx-3"
+          >
+            <i class="fab fa-github text-2xl"></i>
+          </a>
+          <a
+            href="https://diegoarnanz-maker-portfolio.netlify.app/"
+            target="_blank"
+            class="text-[var(--text-color)] hover:text-[var(--secondary-color)] transition duration-300 mx-3"
+          >
+            <i class="fas fa-briefcase text-2xl"></i>
+          </a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,70 @@
+Listado de rutas de carpetas para el volumen Windows
+El número de serie del volumen es 845B-1A13
+C:.
+¦   estructura_proyecto.txt
+¦   
++---java
+¦   +---ALD_Actividad_4
+¦       ¦   AldActividad4Application.java
+¦       ¦   
+¦       +---auth
+¦       ¦       SpringSecurityConfig.java
+¦       ¦       
+¦       +---controller
+¦       ¦       AdminController.java
+¦       ¦       ClienteController.java
+¦       ¦       ErrorPersonalizadoController.java
+¦       ¦       EventoController.java
+¦       ¦       HomeController.java
+¦       ¦       PerfilController.java
+¦       ¦       ReservaController.java
+¦       ¦       TipoController.java
+¦       ¦       UsuarioController.java
+¦       ¦       
+¦       +---modelo
+¦           +---dao
+¦           ¦       EventoDaoImplJpaMy8.java
+¦           ¦       IEventoDao.java
+¦           ¦       IGenericoCrud.java
+¦           ¦       IPerfilDao.java
+¦           ¦       IReservaDao.java
+¦           ¦       ITipoDao.java
+¦           ¦       IUsuarioDao.java
+¦           ¦       PerfilDaoImplJpaMy8.java
+¦           ¦       ReservaDaoImplJpaMy8.java
+¦           ¦       TipoDaoImplJpaMy8.java
+¦           ¦       UsuarioDaoImplJpaMy8.java
+¦           ¦       
+¦           +---entidades
+¦           ¦       Evento.java
+¦           ¦       Perfil.java
+¦           ¦       Reserva.java
+¦           ¦       Tipo.java
+¦           ¦       Usuario.java
+¦           ¦       
+¦           +---repository
+¦                   IEventoRepository.java
+¦                   IPerfilRepository.java
+¦                   IReservaRepository.java
+¦                   ITipoRepository.java
+¦                   IUsuarioRepository.java
+¦                   
++---resources
+    ¦   application.properties
+    ¦   
+    +---static
+    +---templates
+        +---admin
+        ¦       menu.html
+        ¦       
+        +---cliente
+        ¦       menu.html
+        ¦       
+        +---error
+        ¦       error-personalizado.html
+        ¦       
+        +---home
+                anonymus.html
+                login.html
+                registro.html
+                
