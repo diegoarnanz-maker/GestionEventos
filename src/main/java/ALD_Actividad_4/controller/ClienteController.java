@@ -1,7 +1,6 @@
 package ALD_Actividad_4.controller;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +48,7 @@ public class ClienteController {
         return "cliente/menu";
     }
 
-    // Listar eventos con filtro de estado y tipo
+    // Listar eventos con filtros combinados: estado, tipo y destacado
     @GetMapping("/evento")
     public String listarEventos(
             @RequestParam(required = false) String estado,
@@ -57,51 +56,29 @@ public class ClienteController {
             @RequestParam(required = false) String idTipo,
             Model model) {
 
-        List<Evento> eventos = new ArrayList<>();
-        String tipoTitulo = "Todos los tipos";
+        // Conversión de parámetros
+        Integer tipoId = (idTipo != null && !idTipo.isEmpty()) ? Integer.parseInt(idTipo) : null;
+        estado = (estado != null && !estado.isEmpty()) ? estado : null;
+        destacado = (destacado != null && !destacado.isEmpty()) ? destacado : null;
 
-        Integer tipoId = null;
-        if (idTipo != null && !idTipo.isEmpty()) {
-            try {
-                tipoId = Integer.parseInt(idTipo);
-            } catch (NumberFormatException e) {
-                System.err.println("Error al convertir idTipo: " + idTipo);
-            }
-        }
+        // Consulta filtrada
+        List<Evento> eventos = eventoDao.filtrarEventos(destacado, estado, tipoId);
 
-        // Filtro destacado
-        if (destacado != null && destacado.equals("S")) {
-            eventos = eventoDao.listarDestacados(destacado);
-            model.addAttribute("estado", "Eventos Destacados");
-        }
-        // Filtro estado y tipo
-        else if (estado != null && tipoId != null) {
-            eventos = eventoDao.listarPorEstadoYTipo(estado, tipoId);
-            model.addAttribute("estado", mapearEstado(estado));
-            tipoTitulo = obtenerNombreTipo(tipoId);
-        }
-        // Filtro estado 
-        else if (estado != null) {
-            eventos = eventoDao.listarPorEstado(estado);
-            model.addAttribute("estado", mapearEstado(estado));
-        }
-        // Filtro tipo
-        else if (tipoId != null) {
-            eventos = eventoDao.listarPorTipo(tipoId);
-            model.addAttribute("estado", "Eventos del tipo seleccionado");
-            tipoTitulo = obtenerNombreTipo(tipoId); // Buscar el nombre del tipo de manera segura
-        }
-        // Filtro todos/todos
-        else {
-            eventos = eventoDao.obtenerTodos();
-            model.addAttribute("estado", "Todos los eventos");
-        }
+        // Títulos para el filtro aplicado
+        String tipoTitulo = (tipoId != null) ? obtenerNombreTipo(tipoId) : "Todos los tipos";
+        String estadoTitulo = (estado != null) ? mapearEstado(estado) : "Todos los eventos";
+        String destacadoTitulo = (destacado != null && destacado.equals("S")) ? "Destacados" : null;
 
+
+        // Cálculo de plazas disponibles
         Map<Integer, Integer> plazasDisponibles = calcularPlazasDisponibles(eventos);
 
+        // Añadir atributos al modelo
         model.addAttribute("eventos", eventos);
         model.addAttribute("plazasDisponibles", plazasDisponibles);
         model.addAttribute("tipo", tipoTitulo);
+        model.addAttribute("estado", estadoTitulo);
+        model.addAttribute("destacado", destacadoTitulo);
 
         return "cliente/evento/eventos";
     }
@@ -168,8 +145,7 @@ public class ClienteController {
         return "redirect:/cliente/reserva";
     }
 
-
-    //METODOS (Podrian ir en un servicio para dejar mas limpio el controller)
+    // METODOS (Podrian ir en un servicio para dejar mas limpio el controller)
 
     // Método que een el titulo de eventos salga mas bonito
     private String mapearEstado(String estado) {

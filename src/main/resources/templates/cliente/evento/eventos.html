@@ -94,11 +94,20 @@
       <div
         class="bg-[var(--accent-color)] text-[var(--primary-color)] shadow-lg rounded-lg p-4"
       >
-        <h1
-          class="text-2xl font-bold text-center mb-4"
-          th:text="${estado}"
-        ></h1>
-        <h2 class="text-xl text-center mb-4" th:text="${tipo}"></h2>
+        <div class="text-center mb-6">
+          <h1 class="text-2xl font-bold">
+            <span th:text="${estado}"></span>
+            <span
+              class="text-lg text-gray-600 ml-2"
+              th:text="'| ' + ${tipo}"
+            ></span>
+            <span
+              th:if="${destacado != null}"
+              class="text-lg text-yellow-600 ml-2"
+              th:text="'| ' + ${destacado}"
+            ></span>
+          </h1>
+        </div>
 
         <!-- Tabla de Eventos -->
         <div class="overflow-x-auto">

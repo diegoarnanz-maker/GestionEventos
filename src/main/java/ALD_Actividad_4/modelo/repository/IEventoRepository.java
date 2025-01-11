@@ -12,9 +12,6 @@ public interface IEventoRepository extends JpaRepository<Evento, Integer> {
 
     List<Evento> findByDestacado(String destacado);
 
-    // @Query("SELECT e FROM Evento e WHERE (:estado IS NULL OR e.estado =
-    // :estado)")
-    // List<Evento> listarPorEstado(@Param("estado") String estado);
     List<Evento> findByEstado(String estado);
 
     List<Evento> findByEstadoAndTipo_IdTipo(String estado, Integer idTipo);
@@ -23,5 +20,27 @@ public interface IEventoRepository extends JpaRepository<Evento, Integer> {
 
     @Query("SELECT SUM(r.cantidad) FROM Reserva r WHERE r.evento.idEvento = :idEvento")
     int contarReservasPorEvento(@Param("idEvento") int idEvento);
+
+    @Query("SELECT e FROM Evento e " +
+            "WHERE (:destacado IS NULL OR e.destacado = :destacado) " +
+            "AND (:estado IS NULL OR e.estado = :estado) " +
+            "AND (:idTipo IS NULL OR e.tipo.idTipo = :idTipo)")
+    List<Evento> filtrarEventos(
+            @Param("destacado") String destacado,
+            @Param("estado") String estado,
+            @Param("idTipo") Integer idTipo);
+
+    // List<Evento> findByDestacadoAndEstado(String destacado, String estado);
+
+    // @Query("SELECT e FROM Evento e WHERE e.destacado = :destacado AND e.tipo.idTipo = :idTipo")
+    // List<Evento> findByDestacadoAndTipo_IdTipo(
+    //         @Param("destacado") String destacado,
+    //         @Param("idTipo") Integer idTipo);
+
+    // @Query("SELECT e FROM Evento e WHERE e.destacado = :destacado AND e.estado = :estado AND e.tipo.idTipo = :idTipo")
+    // List<Evento> findByDestacadoAndEstadoAndTipo_IdTipo(
+    //         @Param("destacado") String destacado,
+    //         @Param("estado") String estado,
+    //         @Param("idTipo") Integer idTipo);
 
 }

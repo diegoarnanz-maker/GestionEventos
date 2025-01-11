@@ -128,4 +128,44 @@ public class EventoDaoImplJpaMy8 implements IEventoDao {
         }
     }
 
+    @Override
+    public List<Evento> filtrarEventos(String destacado, String estado, Integer idTipo) {
+        try {
+            return eventoRepository.filtrarEventos(destacado, estado, idTipo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // @Override
+    // public List<Evento> listarPorDestacadoEstadoYTipo(String destacado, String estado, Integer idTipo) {
+    //     try {
+    //         return eventoRepository.findByDestacadoAndEstadoAndTipo_IdTipo(destacado, estado, idTipo);
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //         return null;
+    //     }
+    // }
+
+    // @Override
+    // public List<Evento> listarPorDestacadoYEstado(String destacado, String estado) {
+    //     try {
+    //         return eventoRepository.findByDestacadoAndEstado(destacado, estado);
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //         return null;
+    //     }
+    // }
+
+    // @Override
+    // public List<Evento> listarPorDestacadoYTipo(String destacado, Integer idTipo) {
+    //     try {
+    //         return eventoRepository.findByDestacadoAndTipo_IdTipo(destacado, idTipo);
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //         return null;
+    //     }
+    // }
+
 }

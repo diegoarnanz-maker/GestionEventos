@@ -50,7 +50,8 @@
     <main
       class="flex-grow container mx-auto p-6 mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6"
     >
-      <!-- Card de estados con filtros -->
+
+    <!-- Eventos -->
       <div
         class="bg-[var(--accent-color)] text-[var(--primary-color)] shadow-lg rounded-lg p-6"
       >
@@ -61,7 +62,7 @@
           method="get"
           class="flex flex-col gap-4"
         >
-          <!-- Filtro por Estado -->
+          <!-- Estado -->
           <div>
             <label for="estado" class="block text-sm font-semibold"
               >Estado:</label
@@ -95,7 +96,7 @@
             </select>
           </div>
 
-          <!-- Filtro por Tipo -->
+          <!-- Tipo -->
           <div>
             <label for="idTipo" class="block text-sm font-semibold"
               >Tipo:</label
@@ -117,7 +118,20 @@
             </select>
           </div>
 
-          <!-- Botón para aplicar el filtro -->
+          <!-- Destacado -->
+          <div class="flex items-center space-x-2">
+            <label for="destacado" class="text-sm font-semibold"
+              >Destacados</label
+            >
+            <input
+              type="checkbox"
+              name="destacado"
+              value="S"
+              th:checked="${param.destacado == 'S'}"
+              class="w-4 h-4 border border-gray-300 rounded-md focus:ring-[var(--secondary-color)]"
+            />
+          </div>
+
           <button
             type="submit"
             class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg shadow w-full"
@@ -125,10 +139,9 @@
             Filtrar
           </button>
         </form>
-        
       </div>
 
-      <!-- Card de mis reservas -->
+      <!-- Mis reservas -->
       <div
         class="bg-[var(--accent-color)] text-[var(--primary-color)] shadow-lg rounded-lg p-6"
       >
