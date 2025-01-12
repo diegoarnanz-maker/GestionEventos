@@ -56,15 +56,13 @@ public class ClienteController {
             @RequestParam(required = false) String idTipo,
             Model model) {
 
-        // Conversión de parámetros
         Integer tipoId = (idTipo != null && !idTipo.isEmpty()) ? Integer.parseInt(idTipo) : null;
         estado = (estado != null && !estado.isEmpty()) ? estado : null;
         destacado = (destacado != null && !destacado.isEmpty()) ? destacado : null;
 
-        // Consulta filtrada
         List<Evento> eventos = eventoDao.filtrarEventos(destacado, estado, tipoId);
 
-        // Títulos para el filtro aplicado
+        // Títulos para el filtro
         String tipoTitulo = (tipoId != null) ? obtenerNombreTipo(tipoId) : "Todos los tipos";
         String estadoTitulo = (estado != null) ? mapearEstado(estado) : "Todos los eventos";
         String destacadoTitulo = (destacado != null && destacado.equals("S")) ? "Destacados" : null;

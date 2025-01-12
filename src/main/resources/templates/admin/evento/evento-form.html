@@ -51,27 +51,30 @@
 
     <!-- MAIN -->
     <main class="flex-grow container mx-auto p-4 mt-4">
-      <div class="max-w-4xl mx-auto bg-[var(--accent-color)] text-[var(--primary-color)] shadow-lg rounded-lg p-6">
+      <div
+        class="max-w-4xl mx-auto bg-[var(--accent-color)] text-[var(--primary-color)] shadow-lg rounded-lg p-6"
+      >
         <h1 class="text-xl font-bold text-center mb-4">Formulario de Evento</h1>
 
-        <form th:action="@{/admin/eventos}" method="post" id="eventoForm" th:object="${evento}">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <form
+          th:action="@{/admin/eventos}"
+          method="post"
+          id="eventoForm"
+          th:object="${evento}"
+        >
+          <!-- Mensajes error generales -->
+          <div th:if="${errores != null}">
+            <p th:text="${errores}" class="text-red-600 text-sm"></p>
+          </div>
 
-            <!-- Se prodia ocultar -->
-            <div th:if="${evento.idEvento != null}">
-              <label for="idEvento" class="block text-sm font-medium">ID</label>
-              <input
-                type="text"
-                id="idEvento"
-                name="idEvento"
-                class="mt-1 block w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm bg-gray-100 cursor-not-allowed focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm"
-                th:value="${evento.idEvento}"
-                readonly
-              />
-            </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             
+            <input type="hidden" th:field="*{idEvento}" />
+
             <div>
-              <label for="nombre" class="block text-sm font-medium">Nombre</label>
+              <label for="nombre" class="block text-sm font-medium"
+                >Nombre</label
+              >
               <input
                 type="text"
                 id="nombre"
@@ -80,9 +83,13 @@
                 placeholder="Introduce el nombre del evento"
                 required
               />
-              <p th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" class="text-red-600 text-sm"></p>
+              <p
+                th:if="${#fields.hasErrors('nombre')}"
+                th:errors="*{nombre}"
+                class="text-red-600 text-sm"
+              ></p>
             </div>
-            
+
             <div>
               <label for="tipo" class="block text-sm font-medium">Tipo</label>
               <select
@@ -99,100 +106,127 @@
                   th:selected="${evento.tipo?.idTipo == tipo.idTipo}"
                 ></option>
               </select>
-              <p th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}" class="text-red-600 text-sm"></p>
             </div>
-            
+
             <div>
-              <label for="aforoMaximo" class="block text-sm font-medium">Aforo Máximo</label>
+              <label for="aforoMaximo" class="block text-sm font-medium"
+                >Aforo Máximo</label
+              >
               <input
                 type="number"
                 id="aforoMaximo"
-                name="aforoMaximo"
-                class="mt-1 block w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm"
-                th:value="${evento.aforoMaximo}"
+                th:field="*{aforoMaximo}"
+                class="mt-1 block w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm"
                 placeholder="Introduce el aforo máximo"
                 required
               />
             </div>
 
             <div>
-              <label for="minimoAsistencia" class="block text-sm font-medium">Mínimo de Asistencia</label>
+              <label for="minimoAsistencia" class="block text-sm font-medium"
+                >Mínimo de Asistencia</label
+              >
               <input
                 type="number"
                 id="minimoAsistencia"
-                name="minimoAsistencia"
-                class="mt-1 block w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm"
-                th:value="${evento.minimoAsistencia}"
+                th:field="*{minimoAsistencia}"
+                class="mt-1 block w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm"
                 placeholder="Introduce el mínimo de asistencia"
-                required
-              />
-            </div>
-            
-            <div>
-              <label for="fechaInicio" class="block text-sm font-medium">Fecha de Inicio</label>
-              <input
-                type="date"
-                id="fechaInicio"
-                name="fechaInicio"
-                class="mt-1 block w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm"
-                th:value="${#dates.format(evento.fechaInicio, 'yyyy-MM-dd')}"
                 required
               />
             </div>
 
             <div>
-              <label for="duracion" class="block text-sm font-medium">Duración (horas)</label>
+              <label for="fechaInicio" class="block text-sm font-medium"
+                >Fecha de Inicio</label
+              >
+              <input
+                type="date"
+                id="fechaInicio"
+                th:field="*{fechaInicio}"
+                class="mt-1 block w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm"
+                required
+              />
+            </div>
+
+            <div>
+              <label for="duracion" class="block text-sm font-medium"
+                >Duración (horas)</label
+              >
               <input
                 type="number"
                 id="duracion"
-                name="duracion"
-                class="mt-1 block w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm"
-                th:value="${evento.duracion}"
+                th:field="*{duracion}"
+                class="mt-1 block w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm"
                 placeholder="Duración del evento"
                 required
               />
             </div>
 
             <div>
-              <label for="precio" class="block text-sm font-medium">Precio (€)</label>
+              <label for="precio" class="block text-sm font-medium"
+                >Precio (€)</label
+              >
               <input
                 type="number"
                 step="0.01"
                 id="precio"
-                name="precio"
-                class="mt-1 block w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm"
-                th:value="${evento.precio}"
+                th:field="*{precio}"
+                class="mt-1 block w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm"
                 placeholder="Precio del evento"
                 required
               />
             </div>
 
+            <div>
+              <label for="destacado" class="block text-sm font-medium"
+                >Destacado</label
+              >
+              <select
+                id="destacado"
+                name="destacado"
+                class="mt-1 block px-3 py-1.5 border border-gray-300 rounded-md shadow-sm"
+              >
+                <option value="S" th:selected="${evento.destacado == 'S'}">
+                  Sí
+                </option>
+                <option value="N" th:selected="${evento.destacado == 'N'}">
+                  No
+                </option>
+              </select>
+            </div>
+
             <div class="md:col-span-2">
-              <label for="direccion" class="block text-sm font-medium">Dirección</label>
+              <label for="direccion" class="block text-sm font-medium"
+                >Dirección</label
+              >
               <input
                 type="text"
                 id="direccion"
-                name="direccion"
-                class="mt-1 block w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm"
-                th:value="${evento.direccion}"
+                th:field="*{direccion}"
+                class="mt-1 block w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm"
                 placeholder="Introduce la dirección"
                 required
               />
             </div>
 
             <div class="md:col-span-2">
-              <label for="descripcion" class="block text-sm font-medium">Descripción</label>
+              <label for="descripcion" class="block text-sm font-medium"
+                >Descripción</label
+              >
               <textarea
                 id="descripcion"
-                name="descripcion"
-                class="mt-1 block w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm h-[100px] resize-none"
+                th:field="*{descripcion}"
+                class="mt-1 block w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm"
                 placeholder="Describe el evento"
-                th:text="${evento.descripcion}"
                 required
               ></textarea>
             </div>
           </div>
-          
+
+          <!-- Input oculto para gestionar el estado -->
+          <input type="hidden" name="estado" th:value="${evento.estado}" />
+
           <!-- Botones de acción -->
           <div class="flex flex-wrap justify-end gap-3 mt-6">
             <button
@@ -217,7 +251,6 @@
         </form>
       </div>
     </main>
-    
 
     <!-- FOOTER -->
     <footer class="bg-[var(--primary-color)] text-[var(--text-color)] py-6">

@@ -3,7 +3,7 @@ package ALD_Actividad_4.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+// import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,12 +15,10 @@ import ALD_Actividad_4.modelo.dao.IEventoDao;
 import ALD_Actividad_4.modelo.dao.ITipoDao;
 import ALD_Actividad_4.modelo.entidades.Evento;
 import ALD_Actividad_4.modelo.entidades.Tipo;
-import jakarta.validation.Valid;
+import ALD_Actividad_4.service.EventoService;
+// import jakarta.validation.Valid;
 
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/admin/eventos")
@@ -32,39 +30,22 @@ public class EventoController {
     @Autowired
     private ITipoDao tipoDao;
 
+    @Autowired
+    private EventoService eventoService;
+
     // Listar eventos
     @GetMapping
-    public String listarEventos(
-            @RequestParam(required = false) String estado,
+    public String listarEventos(@RequestParam(required = false) String estado,
             @RequestParam(required = false) String destacado,
             Model model) {
+        eventoService.actualizarEstadosFechaVencida();
 
-        // Antes de mostrar, actualizo estado por si hay alguno que se ha pasado la
-        // fecha de inicio y lo paso a "TERMINADO"
-        actualizarEstadosFechaVencida();
+        List<Evento> eventos = eventoService.filtrarEventos(estado, destacado);
+        String estadoMostrar = eventoService.determinarEstadoMostrar(estado, destacado);
 
-        List<Evento> eventos;
-        if (destacado != null && destacado.equals("S")) {
-            eventos = eventoDao.listarDestacados(destacado);
-            model.addAttribute("estado", "Eventos Destacados");
-        } else if (estado != null) {
-            eventos = eventoDao.listarPorEstado(estado);
-            model.addAttribute("estado", estado);
-        } else {
-            eventos = eventoDao.obtenerTodos();
-            model.addAttribute("estado", "Todos los Eventos");
-        }
-
-        // Calcular las plazas disponibles para cada evento
-        Map<Integer, Integer> plazasDisponibles = new HashMap<>();
-        for (Evento evento : eventos) {
-            int reservasRealizadas = eventoDao.contarReservasPorEvento(evento.getIdEvento());
-            int disponibles = evento.getAforoMaximo() - reservasRealizadas;
-            plazasDisponibles.put(evento.getIdEvento(), disponibles);
-        }
-
+        model.addAttribute("estado", estadoMostrar);
         model.addAttribute("eventos", eventos);
-        model.addAttribute("plazasDisponibles", plazasDisponibles);
+        model.addAttribute("plazasDisponibles", eventoService.calcularPlazasDisponibles(eventos));
 
         return "admin/evento/eventos";
     }
@@ -79,29 +60,32 @@ public class EventoController {
     // Crear un evento
     @GetMapping("/crear")
     public String crearEvento(Model model) {
-        model.addAttribute("evento", new Evento());
+        Evento evento = new Evento();
+        System.out.println("Objeto Evento Inicializado: " + evento);
+        model.addAttribute("evento", evento);
         model.addAttribute("tipos", tipoDao.obtenerTodos());
         return "admin/evento/evento-form";
     }
 
     // Guardar un evento
     @PostMapping
-    public String guardarEvento(@Valid @ModelAttribute Evento evento, @RequestParam int tipoId, BindingResult result, Model model) {
+    public String guardarEvento(@ModelAttribute Evento evento, @RequestParam int tipoId, Model model) {
+        String errores = eventoService.validarEvento(evento);
 
-        // Compruebo si el form tiene errores. Por probar algo nuevo he querido implementar la validacion en el backend con la dependencia de jakarta.validation (VER ENTIDAD EVENTO). Podria haberlo hecho en el frontend con thymeleaf.
-        if (result.hasErrors()) {
+        if (!errores.isEmpty()) {
+            model.addAttribute("errores", errores);
             model.addAttribute("tipos", tipoDao.obtenerTodos());
             return "admin/evento/evento-form";
         }
-        Tipo tipo = tipoDao.buscarPorId(tipoId);
 
-        // Si es un evento nuevo, el estado por defecto será "ACEPTADO".
-        if (evento.getIdEvento() == 0) {
-            evento.setEstado("ACEPTADO");
+        Tipo tipo = tipoDao.buscarPorId(tipoId);
+        if (tipo == null) {
+            model.addAttribute("errores", "El tipo seleccionado no es válido.");
+            model.addAttribute("tipos", tipoDao.obtenerTodos());
+            return "admin/evento/evento-form";
         }
 
-        evento.setTipo(tipo);
-        eventoDao.guardar(evento);
+        eventoService.guardarOActualizarEvento(evento, tipo);
 
         return "redirect:/admin/eventos";
     }
@@ -130,16 +114,4 @@ public class EventoController {
         return "redirect:/admin/eventos";
     }
 
-    // Método para actualizar el estado si la fecha de inicio del evento ya pasó
-    private void actualizarEstadosFechaVencida() {
-        List<Evento> eventos = eventoDao.obtenerTodos();
-        Date fechaActual = new Date();
-
-        for (Evento evento : eventos) {
-            if (evento.getFechaInicio().before(fechaActual) && !"TERMINADO".equals(evento.getEstado())) {
-                evento.setEstado("TERMINADO");
-                eventoDao.guardar(evento);
-            }
-        }
-    }
 }

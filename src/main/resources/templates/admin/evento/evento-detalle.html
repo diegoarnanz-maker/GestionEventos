@@ -84,36 +84,70 @@
         class="max-w-full bg-[var(--accent-color)] text-[var(--primary-color)] shadow-lg rounded-lg p-6"
       >
         <h1 class="text-2xl font-bold text-center mb-6">Detalle del Evento</h1>
-    
+
         <!-- Container -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <!-- Info evento -->
           <div class="sm:col-span-2">
             <ul class="space-y-4">
-              <li><strong>ID:</strong> <span th:text="${evento.idEvento}"></span></li>
-              <li><strong>Nombre:</strong> <span th:text="${evento.nombre}"></span></li>
-              <li><strong>Descripción:</strong> <span th:text="${evento.descripcion}"></span></li>
-              <li><strong>Aforo Máximo:</strong> <span th:text="${evento.aforoMaximo}"></span></li>
-              <li><strong>Mínimo de Asistencia:</strong> <span th:text="${evento.minimoAsistencia}"></span></li>
-              <li><strong>Fecha de Inicio:</strong> <span th:text="${#dates.format(evento.fechaInicio, 'dd/MM/yyyy')}"></span></li>
-              <li><strong>Estado:</strong> <span th:text="${evento.estado}"></span></li>
-              <li><strong>Precio:</strong> <span th:text="${evento.precio} + ' €'"></span></li>
-              <li><strong>Dirección:</strong> <span th:text="${evento.direccion}"></span></li>
-              <li><strong>Destacado:</strong> <span th:text="${evento.destacado == 'S' ? 'Sí' : 'No'}"></span></li>
-              <li><strong>Tipo de Evento:</strong> <span th:text="${evento.tipo.nombre}"></span></li>
+              <li>
+                <strong>ID:</strong> <span th:text="${evento.idEvento}"></span>
+              </li>
+              <li>
+                <strong>Nombre:</strong>
+                <span th:text="${evento.nombre}"></span>
+              </li>
+              <li>
+                <strong>Descripción:</strong>
+                <span th:text="${evento.descripcion}"></span>
+              </li>
+              <li>
+                <strong>Aforo Máximo:</strong>
+                <span th:text="${evento.aforoMaximo}"></span>
+              </li>
+              <li>
+                <strong>Mínimo de Asistencia:</strong>
+                <span th:text="${evento.minimoAsistencia}"></span>
+              </li>
+              <li>
+                <strong>Fecha de Inicio:</strong>
+                <span
+                  th:text="${#dates.format(evento.fechaInicio, 'dd/MM/yyyy')}"
+                ></span>
+              </li>
+              <li>
+                <strong>Estado:</strong>
+                <span th:text="${evento.estado}"></span>
+              </li>
+              <li>
+                <strong>Precio:</strong>
+                <span th:text="${evento.precio} + ' €'"></span>
+              </li>
+              <li>
+                <strong>Dirección:</strong>
+                <span th:text="${evento.direccion}"></span>
+              </li>
+              <li>
+                <strong>Destacado:</strong>
+                <span th:text="${evento.destacado == 'S' ? 'Sí' : 'No'}"></span>
+              </li>
+              <li>
+                <strong>Tipo de Evento:</strong>
+                <span th:text="${evento.tipo.nombre}"></span>
+              </li>
             </ul>
           </div>
-    
+
           <!-- Imagen -->
           <div class="flex justify-center items-center">
             <img
-              src="https://via.placeholder.com/300"
+              src="https://dummyimage.com/300x300/cccccc/000000"
               alt="Imagen del Evento"
               class="rounded-lg shadow-md"
             />
           </div>
         </div>
-    
+
         <div class="flex justify-center mt-6">
           <a
             th:href="@{/admin/eventos}"
@@ -124,7 +158,7 @@
         </div>
       </div>
     </main>
-    
+
     <!-- FOOTER -->
     <footer class="bg-[var(--primary-color)] text-[var(--text-color)] py-6">
       <div class="max-w-7xl mx-auto text-center">
