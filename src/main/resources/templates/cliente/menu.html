@@ -50,19 +50,17 @@
     <main
       class="flex-grow container mx-auto p-6 mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6"
     >
-
-    <!-- Eventos -->
+      <!-- Eventos -->
       <div
         class="bg-[var(--accent-color)] text-[var(--primary-color)] shadow-lg rounded-lg p-6"
       >
         <h2 class="text-2xl font-bold mb-4 text-center">Explora los Eventos</h2>
-        <!-- Formulario de Filtros -->
+
         <form
           th:action="@{/cliente/evento}"
           method="get"
           class="flex flex-col gap-4"
         >
-          <!-- Estado -->
           <div>
             <label for="estado" class="block text-sm font-semibold"
               >Estado:</label
@@ -96,7 +94,6 @@
             </select>
           </div>
 
-          <!-- Tipo -->
           <div>
             <label for="idTipo" class="block text-sm font-semibold"
               >Tipo:</label
@@ -118,7 +115,6 @@
             </select>
           </div>
 
-          <!-- Destacado -->
           <div class="flex items-center space-x-2">
             <label for="destacado" class="text-sm font-semibold"
               >Destacados</label

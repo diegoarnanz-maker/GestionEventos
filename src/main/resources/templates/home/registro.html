@@ -1,169 +1,197 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --primary-color: #1a1a1a;
-            --secondary-color: #b69f58;
-            --accent-color: #e5e5e5;
-            --text-color: #d1d1d1;
-        }
+      :root {
+        --primary-color: #1a1a1a;
+        --secondary-color: #b69f58;
+        --accent-color: #e5e5e5;
+        --text-color: #d1d1d1;
+      }
     </style>
     <!-- js para mustmatch de las passwords y para resetear el formulario -->
     <script>
-        function validarContrasena() {
-            const password = document.getElementById("password").value;
-            const confirmPassword = document.getElementById("confirmPassword").value;
-            const errorText = document.getElementById("errorText");
+      function validarContrasena() {
+        const password = document.getElementById("password").value;
+        const confirmPassword =
+          document.getElementById("confirmPassword").value;
+        const errorText = document.getElementById("errorText");
 
-            if (password !== confirmPassword) {
-                errorText.textContent = "Las contraseñas no coinciden.";
-                return false;
-            }
-
-            errorText.textContent = "";
-            return true;
+        if (password !== confirmPassword) {
+          errorText.textContent = "Las contraseñas no coinciden.";
+          return false;
         }
 
-        function resetForm() {
-            document.getElementById("registroForm").reset();
-            document.getElementById("errorText").textContent = "";
-        }
+        errorText.textContent = "";
+        return true;
+      }
+
+      function resetForm() {
+        document.getElementById("registroForm").reset();
+        document.getElementById("errorText").textContent = "";
+      }
     </script>
-</head>
-<body class="bg-[var(--primary-color)] text-[var(--text-color)] flex items-center justify-center min-h-screen">
-    <div class="w-full max-w-lg bg-[var(--accent-color)] text-[var(--primary-color)] rounded-lg shadow-lg p-8">
-        <h1 class="text-2xl font-bold text-center text-[var(--primary-color)] mb-6">
-            Registro de Usuario
-        </h1>
-        <form
-            id="registroForm"
-            th:action="@{/registro}"
-            method="post"
-            class="space-y-4"
-            onsubmit="return validarContrasena()"
-        >
-            <!-- Usuario -->
-            <div>
-                <label for="username" class="block text-sm font-medium text-[var(--primary-color)]">Usuario</label>
-                <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    class="mt-1 block w-full px-4 py-2 border border-[var(--secondary-color)] rounded-md shadow-sm focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm"
-                    placeholder="Introduce tu usuario"
-                    required
-                />
-            </div>
+  </head>
+  <body
+    class="bg-[var(--primary-color)] text-[var(--text-color)] flex items-center justify-center min-h-screen"
+  >
+    <div
+      class="w-full max-w-lg bg-[var(--accent-color)] text-[var(--primary-color)] rounded-lg shadow-lg p-8"
+    >
+      <h1
+        class="text-2xl font-bold text-center text-[var(--primary-color)] mb-6"
+      >
+        Registro de Usuario
+      </h1>
+      <form
+        id="registroForm"
+        th:action="@{/registro}"
+        method="post"
+        class="space-y-4"
+        onsubmit="return validarContrasena()"
+      >
+        <div>
+          <label
+            for="username"
+            class="block text-sm font-medium text-[var(--primary-color)]"
+            >Usuario</label
+          >
+          <input
+            type="text"
+            id="username"
+            name="username"
+            class="mt-1 block w-full px-4 py-2 border border-[var(--secondary-color)] rounded-md shadow-sm focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm"
+            placeholder="Introduce tu usuario"
+            required
+          />
+        </div>
 
-            <!-- Nombre -->
-            <div>
-                <label for="nombre" class="block text-sm font-medium text-[var(--primary-color)]">Nombre</label>
-                <input
-                    type="text"
-                    id="nombre"
-                    name="nombre"
-                    class="mt-1 block w-full px-4 py-2 border border-[var(--secondary-color)] rounded-md shadow-sm focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm"
-                    placeholder="Introduce tu nombre"
-                    required
-                />
-            </div>
+        <div>
+          <label
+            for="nombre"
+            class="block text-sm font-medium text-[var(--primary-color)]"
+            >Nombre</label
+          >
+          <input
+            type="text"
+            id="nombre"
+            name="nombre"
+            class="mt-1 block w-full px-4 py-2 border border-[var(--secondary-color)] rounded-md shadow-sm focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm"
+            placeholder="Introduce tu nombre"
+            required
+          />
+        </div>
 
-            <!-- Apellidos -->
-            <div>
-                <label for="apellidos" class="block text-sm font-medium text-[var(--primary-color)]">Apellidos</label>
-                <input
-                    type="text"
-                    id="apellidos"
-                    name="apellidos"
-                    class="mt-1 block w-full px-4 py-2 border border-[var(--secondary-color)] rounded-md shadow-sm focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm"
-                    placeholder="Introduce tus apellidos"
-                    required
-                />
-            </div>
+        <div>
+          <label
+            for="apellidos"
+            class="block text-sm font-medium text-[var(--primary-color)]"
+            >Apellidos</label
+          >
+          <input
+            type="text"
+            id="apellidos"
+            name="apellidos"
+            class="mt-1 block w-full px-4 py-2 border border-[var(--secondary-color)] rounded-md shadow-sm focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm"
+            placeholder="Introduce tus apellidos"
+            required
+          />
+        </div>
 
-            <!-- Direccion -->
-            <div>
-                <label for="direccion" class="block text-sm font-medium text-[var(--primary-color)]">Dirección</label>
-                <input
-                    type="text"
-                    id="direccion"
-                    name="direccion"
-                    class="mt-1 block w-full px-4 py-2 border border-[var(--secondary-color)] rounded-md shadow-sm focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm"
-                    placeholder="Introduce tu dirección"
-                    required
-                />
-            </div>
+        <div>
+          <label
+            for="direccion"
+            class="block text-sm font-medium text-[var(--primary-color)]"
+            >Dirección</label
+          >
+          <input
+            type="text"
+            id="direccion"
+            name="direccion"
+            class="mt-1 block w-full px-4 py-2 border border-[var(--secondary-color)] rounded-md shadow-sm focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm"
+            placeholder="Introduce tu dirección"
+            required
+          />
+        </div>
 
-            <!-- Email -->
-            <div>
-                <label for="email" class="block text-sm font-medium text-[var(--primary-color)]">Correo Electrónico</label>
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    class="mt-1 block w-full px-4 py-2 border border-[var(--secondary-color)] rounded-md shadow-sm focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm"
-                    placeholder="Introduce tu correo electrónico"
-                    required
-                />
-            </div>
+        <div>
+          <label
+            for="email"
+            class="block text-sm font-medium text-[var(--primary-color)]"
+            >Correo Electrónico</label
+          >
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="mt-1 block w-full px-4 py-2 border border-[var(--secondary-color)] rounded-md shadow-sm focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm"
+            placeholder="Introduce tu correo electrónico"
+            required
+          />
+        </div>
 
-            <!-- Password -->
-            <div>
-                <label for="password" class="block text-sm font-medium text-[var(--primary-color)]">Contraseña</label>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    class="mt-1 block w-full px-4 py-2 border border-[var(--secondary-color)] rounded-md shadow-sm focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm"
-                    placeholder="Introduce tu contraseña"
-                    required
-                />
-            </div>
+        <div>
+          <label
+            for="password"
+            class="block text-sm font-medium text-[var(--primary-color)]"
+            >Contraseña</label
+          >
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="mt-1 block w-full px-4 py-2 border border-[var(--secondary-color)] rounded-md shadow-sm focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm"
+            placeholder="Introduce tu contraseña"
+            required
+          />
+        </div>
 
-            <!-- Mustmatch -->
-            <div>
-                <label for="confirmPassword" class="block text-sm font-medium text-[var(--primary-color)]">Confirmar Contraseña</label>
-                <input
-                    type="password"
-                    id="confirmPassword"
-                    name="passwordConfirm"
-                    class="mt-1 block w-full px-4 py-2 border border-[var(--secondary-color)] rounded-md shadow-sm focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm"
-                    placeholder="Repite tu contraseña"
-                    required
-                />
-                <p id="errorText" class="text-red-500 text-sm mt-1"></p>
-            </div>
+        <div>
+          <label
+            for="confirmPassword"
+            class="block text-sm font-medium text-[var(--primary-color)]"
+            >Confirmar Contraseña</label
+          >
+          <input
+            type="password"
+            id="confirmPassword"
+            name="passwordConfirm"
+            class="mt-1 block w-full px-4 py-2 border border-[var(--secondary-color)] rounded-md shadow-sm focus:ring-[var(--secondary-color)] focus:border-[var(--secondary-color)] sm:text-sm"
+            placeholder="Repite tu contraseña"
+            required
+          />
+          <p id="errorText" class="text-red-500 text-sm mt-1"></p>
+        </div>
 
-            <!-- Acciones -->
-            <div class="flex flex-col space-y-4">
-                <button
-                    type="submit"
-                    class="w-full px-6 py-3 bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] text-[var(--accent-color)] hover:text-[var(--secondary-color)] rounded-lg shadow-md font-semibold text-lg transition duration-300"
-                >
-                    Registrarse
-                </button>
-                <div class="flex space-x-4">
-                    <button
-                        type="button"
-                        onclick="resetForm()"
-                        class="w-full px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md shadow-md font-semibold transition duration-300"
-                    >
-                        Borrar
-                    </button>
-                    <a
-                        href="/"
-                        class="w-full px-4 py-2 text-center bg-red-500 hover:bg-red-600 text-white rounded-md shadow-md font-semibold transition duration-300"
-                    >
-                        Cancelar
-                    </a>
-                </div>
-            </div>
-        </form>
+        <!-- Botones acciones -->
+        <div class="flex flex-col space-y-4">
+          <button
+            type="submit"
+            class="w-full px-6 py-3 bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] text-[var(--accent-color)] hover:text-[var(--secondary-color)] rounded-lg shadow-md font-semibold text-lg transition duration-300"
+          >
+            Registrarse
+          </button>
+          <div class="flex space-x-4">
+            <button
+              type="button"
+              onclick="resetForm()"
+              class="w-full px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md shadow-md font-semibold transition duration-300"
+            >
+              Borrar
+            </button>
+            <a
+              href="/"
+              class="w-full px-4 py-2 text-center bg-red-500 hover:bg-red-600 text-white rounded-md shadow-md font-semibold transition duration-300"
+            >
+              Cancelar
+            </a>
+          </div>
+        </div>
+      </form>
     </div>
-</body>
+  </body>
 </html>

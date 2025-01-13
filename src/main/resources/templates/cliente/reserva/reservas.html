@@ -28,14 +28,14 @@
       <div
         class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center"
       >
-        <!-- Título -->
-        <a
+
+      <a
           href="/cliente/menu"
           class="text-xl font-semibold tracking-wide hover:text-[var(--accent-color)] transition"
         >
           Gestión de Eventos - Cliente
         </a>
-        <!-- Menú principal -->
+
         <div class="hidden md:flex space-x-6">
           <a
             th:href="@{/cliente/evento?estado=&idTipo=}"
@@ -50,7 +50,7 @@
             Mis Reservas
           </a>
         </div>
-        <!-- Usuario -->
+
         <div class="flex items-center space-x-3">
           <span class="text-sm">
             Bienvenido, <span th:text="${#authentication.name}"></span>
@@ -63,29 +63,6 @@
             Cerrar Sesión
           </a>
         </div>
-      </div>
-      <!-- Menú móvil -->
-      <div
-        class="md:hidden bg-[var(--primary-color)] text-[var(--secondary-color)] p-3"
-      >
-        <ul class="space-y-2">
-          <li>
-            <a
-              th:href="@{/cliente/eventos}"
-              class="block hover:text-[var(--accent-color)] transition"
-            >
-              Eventos
-            </a>
-          </li>
-          <li>
-            <a
-              th:href="@{/cliente/reserva}"
-              class="block hover:text-[var(--accent-color)] transition"
-            >
-              Mis Reservas
-            </a>
-          </li>
-        </ul>
       </div>
     </nav>
 
@@ -139,15 +116,14 @@
                   class="border border-gray-300 px-2 py-1"
                   th:text="${reserva.observaciones ?: 'Sin observaciones'}"
                 ></td>
+                
                 <td class="border border-gray-300 px-2 py-1 text-center">
-                  <!-- Botón de Editar -->
                   <a
                     th:href="@{/cliente/reserva/editar/{id}(id=${reserva.idReserva})}"
                     class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded text-sm shadow"
                   >
                     Editar
                   </a>
-                  <!-- Botón de Eliminar -->
                   <a
                     th:href="@{/cliente/reserva/eliminar/{id}(id=${reserva.idReserva})}"
                     class="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded text-sm shadow ml-2"

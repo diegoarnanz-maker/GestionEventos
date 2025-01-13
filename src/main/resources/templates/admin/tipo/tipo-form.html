@@ -63,7 +63,7 @@
           id="tipoForm"
         >
           <div class="space-y-4">
-            <!-- ID del Tipo (Solo visible si existe) -->
+
             <div th:if="${tipo.idTipo != null}">
               <label for="idTipo" class="block text-sm font-medium">ID</label>
               <input
@@ -75,7 +75,7 @@
                 readonly
               />
             </div>
-            <!-- Nombre -->
+
             <div>
               <label for="nombre" class="block text-sm font-medium">Nombre</label>
               <input
@@ -88,7 +88,7 @@
                 required
               />
             </div>
-            <!-- Descripción -->
+
             <div>
               <label for="descripcion" class="block text-sm font-medium">Descripción</label>
               <textarea

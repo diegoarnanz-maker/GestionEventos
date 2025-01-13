@@ -98,5 +98,4 @@ public class UsuarioDaoImplJpaMy8 implements IUsuarioDao {
             return null;
         }
     }
-
 }

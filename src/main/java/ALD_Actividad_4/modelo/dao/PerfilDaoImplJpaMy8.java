@@ -69,6 +69,4 @@ public class PerfilDaoImplJpaMy8 implements IPerfilDao {
             e.printStackTrace();
         }
     }
-
-
 }

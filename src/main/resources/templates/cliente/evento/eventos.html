@@ -28,14 +28,12 @@
       <div
         class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center"
       >
-        <!-- Título -->
         <a
           href="/cliente/menu"
           class="text-xl font-semibold tracking-wide hover:text-[var(--accent-color)] transition"
         >
           Gestión de Eventos - Cliente
         </a>
-        <!-- Menú principal -->
         <div class="hidden md:flex space-x-6">
           <a
             th:href="@{/cliente/evento?estado=&idTipo=}"
@@ -50,7 +48,6 @@
             Mis Reservas
           </a>
         </div>
-        <!-- Usuario -->
         <div class="flex items-center space-x-3">
           <span class="text-sm">
             Bienvenido, <span th:text="${#authentication.name}"></span>
@@ -64,29 +61,7 @@
           </a>
         </div>
       </div>
-      <!-- Menú móvil -->
-      <div
-        class="md:hidden bg-[var(--primary-color)] text-[var(--secondary-color)] p-3"
-      >
-        <ul class="space-y-2">
-          <li>
-            <a
-              th:href="@{/cliente/eventos}"
-              class="block hover:text-[var(--accent-color)] transition"
-            >
-              Eventos
-            </a>
-          </li>
-          <li>
-            <a
-              th:href="@{/cliente/reserva}"
-              class="block hover:text-[var(--accent-color)] transition"
-            >
-              Mis Reservas
-            </a>
-          </li>
-        </ul>
-      </div>
+
     </nav>
 
     <!-- MAIN -->
@@ -132,7 +107,7 @@
             <tbody>
               <tr
                 th:each="evento : ${eventos}"
-                class="odd:bg-gray-100 even:bg-white"
+                th:classappend="${evento.estado} == 'ACEPTADO' ? 'bg-green-100' : (${evento.estado} == 'TERMINADO' ? 'bg-yellow-100' : (${evento.estado} == 'CANCELADO' ? 'bg-red-100' : ''))"
               >
                 <td
                   class="border border-gray-300 px-2 py-1"
@@ -170,6 +145,7 @@
             </tbody>
           </table>
         </div>
+
         <div class="flex justify-center mt-6">
           <a
             th:href="@{/cliente/menu}"

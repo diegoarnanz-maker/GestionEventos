@@ -62,7 +62,7 @@
           id="eventoForm"
           th:object="${evento}"
         >
-          <!-- Mensajes error generales -->
+          <!-- Mensajes error generales, se podria poner uno debajo de cada input erroneo -->
           <div th:if="${errores != null}">
             <p th:text="${errores}" class="text-red-600 text-sm"></p>
           </div>

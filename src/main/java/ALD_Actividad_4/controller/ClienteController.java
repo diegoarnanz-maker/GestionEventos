@@ -1,7 +1,5 @@
 package ALD_Actividad_4.controller;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,9 +18,9 @@ import ALD_Actividad_4.modelo.dao.IReservaDao;
 import ALD_Actividad_4.modelo.dao.ITipoDao;
 import ALD_Actividad_4.modelo.dao.IUsuarioDao;
 import ALD_Actividad_4.modelo.entidades.Evento;
-import ALD_Actividad_4.modelo.entidades.Reserva;
 import ALD_Actividad_4.modelo.entidades.Tipo;
 import ALD_Actividad_4.modelo.entidades.Usuario;
+import ALD_Actividad_4.service.ClienteService;
 
 @Controller
 @RequestMapping("/cliente")
@@ -39,6 +37,9 @@ public class ClienteController {
 
     @Autowired
     private ITipoDao tipoDao;
+
+    @Autowired
+    private ClienteService clienteService;
 
     // Ver menú de role_cliente
     @GetMapping("/menu")
@@ -63,15 +64,12 @@ public class ClienteController {
         List<Evento> eventos = eventoDao.filtrarEventos(destacado, estado, tipoId);
 
         // Títulos para el filtro
-        String tipoTitulo = (tipoId != null) ? obtenerNombreTipo(tipoId) : "Todos los tipos";
-        String estadoTitulo = (estado != null) ? mapearEstado(estado) : "Todos los eventos";
+        String tipoTitulo = (tipoId != null) ? clienteService.obtenerNombreTipo(tipoId) : "Todos los tipos";
+        String estadoTitulo = (estado != null) ? clienteService.mapearEstado(estado) : "Todos los eventos";
         String destacadoTitulo = (destacado != null && destacado.equals("S")) ? "Destacados" : null;
 
+        Map<Integer, Integer> plazasDisponibles = clienteService.calcularPlazasDisponibles(eventos);
 
-        // Cálculo de plazas disponibles
-        Map<Integer, Integer> plazasDisponibles = calcularPlazasDisponibles(eventos);
-
-        // Añadir atributos al modelo
         model.addAttribute("eventos", eventos);
         model.addAttribute("plazasDisponibles", plazasDisponibles);
         model.addAttribute("tipo", tipoTitulo);
@@ -130,62 +128,10 @@ public class ClienteController {
             return "cliente/evento/evento-detalle";
         }
 
-        Reserva reserva = new Reserva();
-        reserva.setCantidad(cantidad);
-        reserva.setObservaciones(observaciones);
-        reserva.setEvento(evento);
-        reserva.setUsuario(usuario);
-        reserva.setPrecioVenta(evento.getPrecio().multiply(BigDecimal.valueOf(cantidad)));
-
-        reservaDao.guardar(reserva);
+        clienteService.registrarReserva(evento, usuario, cantidad, observaciones);
 
         model.addAttribute("success", "Reserva realizada exitosamente.");
         return "redirect:/cliente/reserva";
-    }
-
-    // METODOS (Podrian ir en un servicio para dejar mas limpio el controller)
-
-    // Método que een el titulo de eventos salga mas bonito
-    private String mapearEstado(String estado) {
-        if (estado == null || estado.isEmpty()) {
-            return "Todos los eventos";
-        }
-        switch (estado) {
-            case "ACEPTADO":
-                return "Eventos Activos";
-            case "TERMINADO":
-                return "Eventos Terminados";
-            case "CANCELADO":
-                return "Eventos Cancelados";
-            default:
-                return "Eventos Desconocidos";
-        }
-    }
-
-    // Método para obtener el nombre del tipo
-    private String obtenerNombreTipo(Integer tipoId) {
-        try {
-            Tipo tipo = tipoDao.buscarPorId(tipoId);
-            return (tipo != null) ? tipo.getNombre() : "Tipo no encontrado";
-        } catch (Exception e) {
-            System.err.println("Error al obtener el nombre del tipo: " + e.getMessage());
-            return "Tipo no encontrado";
-        }
-    }
-
-    // Método para calcular las plazas disponibles de cada evento
-    private Map<Integer, Integer> calcularPlazasDisponibles(List<Evento> eventos) {
-        Map<Integer, Integer> plazasDisponibles = new HashMap<>();
-        for (Evento evento : eventos) {
-            try {
-                int reservasRealizadas = reservaDao.contarCantidadReservadaPorEvento(evento.getIdEvento());
-                int disponibles = evento.getAforoMaximo() - reservasRealizadas;
-                plazasDisponibles.put(evento.getIdEvento(), disponibles);
-            } catch (Exception e) {
-                System.err.println("Error al calcular plazas disponibles para el id evento: " + evento.getIdEvento());
-            }
-        }
-        return plazasDisponibles;
     }
 
 }

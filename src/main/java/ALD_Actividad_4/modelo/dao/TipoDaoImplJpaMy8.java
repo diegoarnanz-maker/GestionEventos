@@ -69,5 +69,4 @@ public class TipoDaoImplJpaMy8 implements ITipoDao {
             e.printStackTrace();
         }
     }
-
 }

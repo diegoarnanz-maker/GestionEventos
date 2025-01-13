@@ -55,7 +55,6 @@
           th:text="'Detalle del Evento - ' + ${evento.nombre}"
         ></h1>
 
-        <!-- Contenedor principal -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <!-- Información del Evento -->
           <div class="sm:col-span-2">
@@ -105,7 +104,7 @@
             </ul>
           </div>
 
-          <!-- Imagen del Evento -->
+          <!-- Imagen -->
           <div class="flex justify-center items-center">
             <img
               src="https://dummyimage.com/300x300/cccccc/000000"
@@ -115,7 +114,6 @@
           </div>
         </div>
 
-        <!-- Mensajes de error o éxito -->
         <div th:if="${error}" class="text-red-500 text-sm text-center mb-2">
           <span th:text="${error}"></span>
         </div>
@@ -124,7 +122,10 @@
         </div>
 
         <!-- Formulario de Reserva -->
-        <div class="mt-6 bg-gray-100 p-4 rounded-lg shadow max-w-sm mx-auto">
+        <div
+          th:if="${evento.estado == 'ACEPTADO'}"
+          class="mt-6 bg-gray-100 p-4 rounded-lg shadow max-w-sm mx-auto"
+        >
           <h2 class="text-lg font-semibold mb-2 text-center">
             Realizar Reserva
           </h2>
@@ -173,7 +174,6 @@
           </form>
         </div>
 
-        <!-- Botón Volver -->
         <div class="flex justify-center mt-6">
           <a
             th:href="@{/cliente/evento}"

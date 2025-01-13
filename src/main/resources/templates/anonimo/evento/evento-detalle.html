@@ -102,7 +102,7 @@
             </ul>
           </div>
 
-          <!-- Imagen del Evento -->
+          <!-- Imagen -->
           <div class="flex justify-center items-center">
             <img
               src="https://dummyimage.com/300x300/cccccc/000000"
@@ -112,13 +112,11 @@
           </div>
         </div>
 
-        <!-- Descripción adicional -->
         <div class="mt-6">
           <h2 class="text-lg font-semibold mb-2">Descripción Completa:</h2>
           <p th:text="${evento.descripcion}"></p>
         </div>
 
-        <!-- Botón Volver -->
         <div class="flex justify-center mt-6">
           <a
             th:href="@{/anonimo/listaActivos}"

@@ -38,7 +38,7 @@
         </div>
 
         <form th:action="@{/login}" method="post" class="space-y-4">
-            <!-- Usuario -->
+
             <div>
                 <label for="username" class="block text-sm font-medium mb-1">
                     Usuario
@@ -53,7 +53,6 @@
                 />
             </div>
 
-            <!-- Contraseña -->
             <div>
                 <label for="password" class="block text-sm font-medium mb-1">
                     Contraseña
@@ -68,7 +67,6 @@
                 />
             </div>
 
-            <!-- Submit -->
             <div>
                 <button
                     type="submit"
@@ -88,7 +86,6 @@
             >.
         </p>
 
-        <!-- Botón pequeño para regresar a la página de inicio -->
         <div class="mt-4 flex justify-center">
             <a
                 th:href="@{/}"
