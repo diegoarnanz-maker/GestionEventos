@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/admin")
 public class AdminController {
 
-    //Ver el menu de role_admon
+    //Ver el menu de role_admon 
     @GetMapping("/menu")
     public String adminMenu() {
         return "admin/menu";
